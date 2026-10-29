@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Маркази савдои Ҳоким — Коргарон</title>
+<style>
+:root{
+  --bg:#F2F7F1;--surface:#FFFFFF;--ink:#10231B;--soft:#5E7168;--primary:#0E3B2C;--leaf:#2E9E5B;--lime:#9BD84E;
+  --leaf-soft:#E0F2E5;--danger:#C2413B;--danger-soft:#FBE5E3;--warn:#B7791F;--warn-soft:#FBF0D6;--border:#DDE8DD;--shadow:0 6px 20px rgba(14,59,44,.08);
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C1713;--surface:#14241D;--ink:#E7F2EA;--soft:#93A89C;--primary:#0A2A1F;--leaf-soft:#173A29;--danger-soft:#3A1B19;--warn-soft:#3A2D12;--border:#23382D;--shadow:none;}}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+#app{max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:96px}
+.topbar{background:linear-gradient(150deg,#0E3B2C 0%,#16573F 100%);color:#EAF6EC;padding:20px 20px 22px;border-radius:0 0 28px 28px;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.brand svg{width:34px;height:34px;flex-shrink:0}
+.brand span{font-size:14px;font-weight:600;color:#BFE3C8}
+.topbar h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-.3px}
+.topbar .sub{font-size:13px;color:#BFE3C8;margin-top:3px}
+.back{background:none;border:none;color:#BFE3C8;font-size:15px;padding:0 0 10px;cursor:pointer;font-family:inherit}
+main{padding:18px 16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.worker-card{display:flex;align-items:center;gap:12px;cursor:pointer}
+.avatar{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,var(--leaf),var(--lime));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0}
+.info{flex:1;min-width:0}.name{font-weight:600;font-size:15.5px}.role{font-size:13px;color:var(--soft);margin-top:2px}
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}.dot.ok{background:var(--leaf)}.dot.due{background:var(--danger)}
+.chev{color:var(--soft);font-size:20px}
+.btn{border:none;border-radius:14px;padding:13px 16px;font-size:14.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+.btn-primary{background:var(--leaf);color:#fff;width:100%}
+.btn-accent{background:var(--primary);color:#EAF6EC}
+.btn-danger{background:var(--danger-soft);color:var(--danger)}
+.btn-success{background:var(--leaf-soft);color:var(--leaf)}
+.btn-ghost{background:var(--border);color:var(--ink)}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.btn-row .btn{width:100%}
+.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));max-width:448px;width:calc(100% - 32px);z-index:6}
+.fab .btn{box-shadow:0 8px 20px rgba(46,158,91,.35)}
+input,select{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;font-size:15px;background:var(--surface);color:var(--ink);font-family:inherit;margin-top:5px}
+label{font-size:12.5px;color:var(--soft);font-weight:600;display:block;margin-top:12px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+nav.tabbar{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:456px;background:var(--surface);border:1px solid var(--border);border-radius:22px;display:flex;z-index:10;padding:7px 6px;box-shadow:0 10px 30px rgba(14,59,44,.18)}
+nav.tabbar button{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--soft);cursor:pointer;padding:6px 2px;border-radius:14px;font-family:inherit}
+nav.tabbar button.active{color:var(--leaf);background:var(--leaf-soft);font-weight:700}
+nav.tabbar .icon{font-size:19px}
+.empty{text-align:center;padding:40px 20px;color:var(--soft)}.empty .big{font-size:34px;margin-bottom:8px}
+.muted{color:var(--soft);font-size:13px}
+.amt-pos{color:var(--leaf);font-weight:600}.amt-neg{color:var(--danger);font-weight:600}
+.hist-item{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.hist-item:last-child{border-bottom:none}.hist-item .l{font-weight:600}.hist-item .d{color:var(--soft);font-size:12px;margin-top:2px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(8,24,17,.6);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.modal{background:var(--bg);width:100%;max-width:480px;border-radius:26px 26px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));max-height:90vh;overflow-y:auto;position:relative;animation:up .18s ease-out}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.modal{animation:none}}
+.modal h2{margin:0 0 14px;font-size:20px}
+.modal-actions{display:flex;gap:10px;margin-top:18px}.modal-actions .btn{flex:1}
+.close-x{position:absolute;top:16px;right:16px;background:var(--border);width:32px;height:32px;border-radius:50%;border:none;font-size:15px;cursor:pointer;color:var(--ink)}
+.pay-line{display:flex;justify-content:space-between;padding:9px 0;font-size:14.5px;border-bottom:1px dashed var(--border)}
+.pay-line.total{border-bottom:none;border-top:2px solid var(--ink);margin-top:6px;padding-top:12px;font-weight:700;font-size:17px}
+.badge{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--danger-soft);color:var(--danger);display:inline-block;margin-top:8px}
+.fine-type-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+.fine-type-row:last-child{border-bottom:none}
+.del-x{background:none;border:none;color:var(--soft);font-size:18px;cursor:pointer;padding:4px 8px}
+.att-row{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--border)}
+.att-row:last-child{border-bottom:none}
+.att-status{font-size:12.5px;margin-top:3px}
+.att-status.late{color:var(--danger)}.att-status.ontime{color:var(--leaf)}.att-status.wait{color:var(--soft)}
+.att-status.warn{color:var(--warn);font-weight:600}
+.att-status.late b{font-size:15px;font-variant-numeric:tabular-nums}
+.notice{background:var(--leaf-soft);color:var(--ink);border-radius:14px;padding:12px 14px;font-size:12.5px;margin-bottom:14px;line-height:1.55}
+.finger{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.fp-ok{color:var(--leaf);font-weight:600}.fp-no{color:var(--danger);font-weight:600}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const KEY='hokim-korgaron-v1';
+let state={workers:[],fineTypes:[],records:[],attendance:[],settings:{graceMin:10,workDays:26}};
+let view={tab:'workers',workerId:null},modalState=null,loaded=false;
+const WD=['Якшанбе','Душанбе','Сешанбе','Чоршанбе','Панҷшанбе','Ҷумъа','Шанбе'];
+const LOGO='<svg viewBox="0 0 48 48" aria-label="Логотип"><path d="M23 43C10 41 4 28 6 9c15 0 21 9 17 34z" fill="#2E9E5B"/><path d="M25 43c-1-15 4-28 18-32 2 17-4 29-18 32z" fill="#9BD84E"/></svg>';
+
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const pad=n=>String(n).padStart(2,'0');
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function fmtDate(i){if(!i)return'—';const[y,m,d]=i.split('-');return d+'.'+m+'.'+y;}
+function fmtMoney(n){n=Math.round((n||0)*100)/100;return n.toLocaleString('ru-RU',{maximumFractionDigits:2})+' сомонӣ';}
+const dir=(s,k=2)=>(s*100).toFixed(k)+' дирам';
+const mmss=s=>pad(Math.floor(s/60))+':'+pad(Math.floor(s%60));
+const daysBetween=(a,b)=>Math.floor((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/864e5);
+const initials=n=>(n||'?').trim().split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase();
+const attr=v=>(v==null)?'':String(v).replace(/"/g,'&quot;');
+const esc=s=>s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function loadData(){
+  try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);state=Object.assign(state,s);state.settings=Object.assign({graceMin:10,workDays:26},s.settings||{});}}catch(e){}
+  loaded=true;render();
+}
+function saveData(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+/* ---- late logic: 10 min grace, then per-second deduction ---- */
+const hm=s=>{const[h,m]=s.split(':').map(Number);return h*3600+m*60;};
+const nowSec=d=>d.getHours()*3600+d.getMinutes()*60+d.getSeconds();
+const shiftLen=w=>Math.max(3600,hm(w.shiftEnd||'18:00')-hm(w.shiftStart||'07:00'));
+const rateSec=w=>(w.salary||0)/(state.settings.workDays||26)/shiftLen(w);
+function lateState(w,d){
+  const late=nowSec(d)-hm(w.shiftStart||'07:00'),g=(state.settings.graceMin??10)*60;
+  return{late,graceLeft:Math.max(0,g-late),pen:Math.min(Math.max(0,late-g),Math.max(0,shiftLen(w)-g))};
+}
+function tick(){
+  document.querySelectorAll('[data-w]').forEach(el=>{
+    const w=state.workers.find(x=>x.id===el.dataset.w);if(!w)return;
+    const L=lateState(w,new Date()),r=rateSec(w);
+    if(L.late<0){el.className='att-status wait';el.textContent='Смена соати '+w.shiftStart+' сар мешавад';}
+    else if(L.pen===0){el.className='att-status warn';el.textContent='Муҳлат: '+mmss(L.graceLeft)+' боқӣ';}
+    else{el.className='att-status late';el.innerHTML='Аз маош кам мешавад: <b>−'+dir(L.pen*r)+'</b><br>'+dir(r,3)+' дар як сония';}
+  });
+}
+setInterval(tick,1000);
+
+/* ---- fingerprint (phone sensor via WebAuthn) ---- */
+const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u)));
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function enrollFinger(id){
+  const w=state.workers.find(x=>x.id===id);if(!w)return;
+  try{
+    const c=await navigator.credentials.create({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),rp:{name:'Маркази савдои Ҳоким'},
+      user:{id:new TextEncoder().encode(w.id),name:w.name,displayName:w.name},
+      pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
+      authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required'},timeout:60000}});
+    w.credId=b64(c.rawId);saveData();render();
+  }catch(e){alert('Изи ангушт сабт нашуд. Ангуштро ба сенсор гузоред ва дубора кӯшиш кунед (дар баъзе браузерҳо ин имконнопазир аст).');}
+}
+async function verifyFinger(w){
+  try{await navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),allowCredentials:[{type:'public-key',id:unb64(w.credId)}],userVerification:'required',timeout:60000}});return true;}
+  catch(e){alert('Изи ангушт тасдиқ нашуд. Дубора кӯшиш кунед.');return false;}
+}
+
+/* ---- helpers ---- */
+const workerRecords=id=>state.records.filter(r=>r.workerId===id&&!r.paid);
+function workerBalance(w){
+  const rs=workerRecords(w.id),sum=t=>rs.filter(r=>r.type===t).reduce((s,r)=>s+r.amount,0);
+  const bonuses=sum('bonus'),fines=sum('fine'),late=sum('late');
+  return{base:w.salary||0,bonuses,fines,late,total:(w.salary||0)+bonuses-fines-late};
+}
+function isSalaryDue(w){const s=w.lastPaidDate||w.hireDate;return s?daysBetween(s,todayISO())>=30:false;}
+
+/* ---- render ---- */
+function header(title,sub,back){
+  return`<header class="topbar">${back?`<button class="back" onclick="goTab('workers')">‹ Коргарон</button>`:`<div class="brand">${LOGO}<span>Маркази савдои Ҳоким</span></div>`}
+  <h1>${title}</h1>${sub||''}</header>`;
+}
+function render(){
+  const app=document.getElementById('app');
+  if(!loaded){app.innerHTML='<main class="empty">Боркунӣ...</main>';return;}
+  let h;
+  if(view.workerId)h=renderWorker(view.workerId);
+  else if(view.tab==='attendance')h=renderAttendance();
+  else if(view.tab==='fines')h=renderFines();
+  else if(view.tab==='settings')h=renderSettings();
+  else h=renderList();
+  app.innerHTML=h+renderTabbar();
+  if(modalState){const d=document.createElement('div');d.innerHTML=modalHtml(modalState);app.appendChild(d.firstElementChild);}
+  tick();
+}
+function renderTabbar(){
+  if(view.workerId)return'';
+  const t=[['workers','👥','Коргарон'],['attendance','☝️','Регистратсия'],['fines','⚠️','Чаримаҳо'],['settings','⚙️','Танзимот']];
+  return`<nav class="tabbar">${t.map(x=>`<button class="${view.tab===x[0]?'active':''}" onclick="goTab('${x[0]}')"><span class="icon">${x[1]}</span><span>${x[2]}</span></button>`).join('')}</nav>`;
+}
+function goTab(t){view={tab:t,workerId:null};render();}
+function renderList(){
+  const body=state.workers.length?state.workers.map(w=>{const due=isSalaryDue(w);
+    return`<div class="card worker-card" onclick="openWorker('${w.id}')"><div class="avatar">${initials(w.name)}</div>
+    <div class="info"><div class="name">${esc(w.name)}</div><div class="role">${esc(w.position||'')}${w.credId?' · ☝️':''}</div></div>
+    <span class="dot ${due?'due':'ok'}" title="${due?'Вақти маош расид':'Хуб'}"></span><span class="chev">›</span></div>`;}).join('')
+    :`<div class="empty"><div class="big">👥</div>Ҳанӯз коргаре илова накардаед.<br>Бо тугмаи поён коргари аввалро илова кунед.</div>`;
+  return header('Коргарон',`<div class="sub">${state.workers.length} нафар</div>`)+`<main>${body}</main><div class="fab"><button class="btn btn-primary" onclick="openModal('addWorker')">+ Коргари нав</button></div>`;
+}
+function openWorker(id){view={tab:'workers',workerId:id};render();}
+function renderWorker(id){
+  const w=state.workers.find(x=>x.id===id);if(!w){view={tab:'workers',workerId:null};return renderList();}
+  const bal=workerBalance(w),due=isSalaryDue(w);
+  const recs=workerRecords(w.id).slice().sort((a,b)=>(b.date+(b.time||'')).localeCompare(a.date+(a.time||'')));
+  const hist=recs.length?recs.map(r=>{const pos=r.type==='bonus';
+    return`<div class="hist-item"><div><div class="l">${esc(r.name)}</div><div class="d">${pos?'Премия':r.type==='late'?'Дер омадан':'Чарима'} · ${fmtDate(r.date)}${r.time?' · '+r.time:''}</div></div>
+    <div class="${pos?'amt-pos':'amt-neg'}">${pos?'+':'−'}${fmtMoney(r.amount)}</div></div>`;}).join(''):'<div class="muted">То ҳол чарима ё премия нест.</div>';
+  const row=(a,b)=>`<div class="muted">${a}</div><div style="margin-bottom:10px;font-weight:600;">${b}</div>`;
+  return header(esc(w.name),due?'<span class="badge">Вақти додани маош расид</span>':'',true)+`<main>
+  <div class="card">${row('Вазифа',esc(w.position||'—'))}${row('Телефон',esc(w.phone||'—'))}${row('Адрес',esc(w.address||'—'))}
+    ${row('Смена',(w.shiftStart||'—')+' – '+(w.shiftEnd||'—'))}${row('Маоши асосӣ',fmtMoney(w.salary))}
+    ${row('Ҳар як сония',dir(rateSec(w),3))}
+    <div class="finger"><div><div class="muted">Изи ангушт</div><div class="${w.credId?'fp-ok':'fp-no'}">${w.credId?'Сабт шудааст':'Сабт нашудааст'}</div></div>
+    <button class="btn btn-ghost" onclick="enrollFinger('${w.id}')">${w.credId?'Аз нав':'Сабт кардан'}</button></div>
+    <div class="muted" style="margin-top:10px">Санаи ба кор қабул</div><div style="font-weight:600">${fmtDate(w.hireDate)}</div>
+    <button class="btn btn-ghost" style="width:100%;margin-top:14px" onclick="openModal('editWorker','${w.id}')">Тағйир додани маълумот</button></div>
+  <div class="btn-row"><button class="btn btn-danger" onclick="openModal('applyFine','${w.id}')">⚠️ Чарима</button><button class="btn btn-success" onclick="openModal('applyBonus','${w.id}')">🏆 Премия</button></div>
+  <button class="btn btn-accent" style="width:100%;margin-bottom:14px" onclick="openModal('paySalary','${w.id}')">💸 Додани маош</button>
+  <div class="card"><h3 style="margin:0 0 10px;font-size:15px">Ин давра (аз ${fmtDate(w.lastPaidDate||w.hireDate)})</h3>${hist}</div></main>`;
+}
+function renderAttendance(){
+  const today=todayISO();
+  const rows=state.workers.map(w=>{
+    const a=state.attendance.find(x=>x.workerId===w.id&&x.date===today);let st,btn='';
+    if(a)st=a.amount>0?`<div class="att-status late">Дер кард: ${mmss((a.pen||0)+(state.settings.graceMin??10)*60)} · аз маош: −${dir(a.amount)} (соати ${a.time})</div>`:`<div class="att-status ontime">Сари вақт ё дар муҳлат омад (соати ${a.time})</div>`;
+    else{st=`<div class="att-status wait" data-w="${w.id}"></div>`;btn=`<button class="btn btn-accent" style="padding:10px 13px;font-size:13px" onclick="registerAttendance('${w.id}')">☝️ Сабт</button>`;}
+    return`<div class="att-row"><div class="avatar">${initials(w.name)}</div><div class="info"><div class="name" style="font-size:14.5px">${esc(w.name)}</div>${st}</div>${btn}</div>`;}).join('');
+  return header('Регистратсия',`<div class="sub">${WD[new Date().getDay()]}, ${fmtDate(today)}</div>`)+`<main>
+  <div class="notice">Коргар бояд бо изи ангушт худро сабт кунад. Аз оғози смена ${state.settings.graceMin??10} дақиқа муҳлат ҳаст. Баъд аз он маош ҳар сония кам шуда меравад, то даме ки коргар изи ангуштро сабт кунад.</div>
+  ${state.workers.length?`<div class="card">${rows}</div>`:'<div class="empty"><div class="big">☝️</div>Аввал дар бахши «Коргарон» коргар илова кунед.</div>'}</main>`;
+}
+async function registerAttendance(id){
+  const w=state.workers.find(x=>x.id===id);if(!w)return;
+  if(!w.credId){alert('Аввал изи ангушти коргарро сабт кунед (саҳифаи коргар).');return;}
+  if(!(await verifyFinger(w)))return;
+  const d=new Date(),time=d.toTimeString().slice(0,5),L=lateState(w,d);
+  const amount=Math.round(L.pen*rateSec(w)*100)/100;
+  state.attendance.push({id:uid(),workerId:id,date:todayISO(),time,pen:L.pen,amount});
+  if(amount>0)state.records.push({id:uid(),workerId:id,type:'late',name:`Дер омадан (${mmss(L.late)}, соати ${time})`,amount,date:todayISO(),time,paid:false});
+  saveData();render();
+}
+function renderFines(){
+  const rows=state.fineTypes.map(f=>`<div class="fine-type-row"><div><div style="font-weight:600">${esc(f.name)}</div><div class="muted">${fmtMoney(f.amount)}</div></div><button class="del-x" onclick="deleteFineType('${f.id}')">✕</button></div>`).join('');
+  return header('Чаримаҳо','<div class="sub">Намудҳои чарима</div>')+`<main>${state.fineTypes.length?`<div class="card">${rows}</div>`:'<div class="empty"><div class="big">⚠️</div>То ҳол намуди чарима илова накардаед.</div>'}</main>
+  <div class="fab"><button class="btn btn-primary" onclick="openModal('addFineType')">+ Намуди чарима</button></div>`;
+}
+function deleteFineType(id){state.fineTypes=state.fineTypes.filter(f=>f.id!==id);saveData();render();}
+function renderSettings(){
+  return header('Танзимот','')+`<main><div class="card">
+  <label>Муҳлат барои дер омадан (дақиқа)</label><input type="number" id="graceIn" value="${state.settings.graceMin??10}" min="0">
+  <label>Рӯзҳои корӣ дар як моҳ (барои ҳисоби як сония)</label><input type="number" id="daysIn" value="${state.settings.workDays||26}" min="1" max="31">
+  <button class="btn btn-primary" style="margin-top:14px" onclick="saveSettings()">Захира кардан</button></div>
+  <div class="notice">Ҳисоб: маоши моҳона ÷ рӯзҳои корӣ ÷ сонияҳои смена = маблағ барои як сония. WhatsApp худкор намефиристад: тугмаи чарима/премия WhatsApp-ро бо матни тайёр мекушояд, шумо гурӯҳро интихоб карда «Фиристодан»-ро мезанед.</div></main>`;
+}
+function saveSettings(){
+  state.settings.graceMin=Math.max(0,parseFloat(document.getElementById('graceIn').value)||0);
+  state.settings.workDays=Math.max(1,parseFloat(document.getElementById('daysIn').value)||26);
+  saveData();render();
+}
+
+/* ---- modals ---- */
+function openModal(type,workerId){modalState={type,workerId};render();}
+function closeModal(){modalState=null;render();}
+function modalHtml(m){
+  const wrap=(t,b)=>`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><button class="close-x" onclick="closeModal()">✕</button><h2>${t}</h2>${b}</div></div>`;
+  const acts=(c,label,fn)=>`<div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Бекор</button><button class="btn ${c}" onclick="${fn}">${label}</button></div>`;
+  const w=m.workerId?state.workers.find(x=>x.id===m.workerId):null;
+  if(m.type==='addWorker'||m.type==='editWorker'){
+    const x=m.type==='editWorker'?w:{};
+    return wrap(m.type==='editWorker'?'Тағйир додани маълумот':'Коргари нав',`
+    <label>Ному насаб</label><input id="f_name" value="${attr(x.name)}">
+    <label>Вазифа</label><input id="f_position" value="${attr(x.position)}">
+    <label>Рақами телефон</label><input id="f_phone" type="tel" value="${attr(x.phone)}" placeholder="+992...">
+    <label>Адрес</label><input id="f_address" value="${attr(x.address)}">
+    <div class="field-row"><div><label>Аз соати</label><input type="time" id="f_s" value="${attr(x.shiftStart||'07:00')}"></div>
+    <div><label>То соати</label><input type="time" id="f_e" value="${attr(x.shiftEnd||'18:00')}"></div></div>
+    <label>Маоши асосӣ (сомонӣ дар як моҳ)</label><input type="number" id="f_salary" value="${x.salary||''}">
+    <label>Санаи ба кор қабул</label><input type="date" id="f_hire" value="${attr(x.hireDate||todayISO())}">
+    ${m.type==='addWorker'?'<div class="notice" style="margin:14px 0 0">Баъд аз захира, телефон изи ангушти коргарро мепурсад.</div>':''}
+    ${acts('btn-primary','Захира',`saveWorker('${m.type}','${m.workerId||''}')`)}`);
+  }
+  if(m.type==='applyFine'){
+    const o=state.fineTypes.map(f=>`<option value="${f.id}">${esc(f.name)} — ${fmtMoney(f.amount)}</option>`).join('');
+    return wrap('Чарима — '+esc(w.name),state.fineTypes.length?`<label>Намуди чарима</label><select id="f_ft">${o}</select>${acts('btn-danger','Чарима + WhatsApp',`confirmFine('${w.id}')`)}`
+      :`<div class="muted">Аввал дар бахши «Чаримаҳо» намуди чаримаро илова кунед.</div><div class="modal-actions"><button class="btn btn-primary" onclick="closeModal()">Хуб</button></div>`);
+  }
+  if(m.type==='applyBonus')return wrap('Премия — '+esc(w.name),`<label>Сабаб / кори хуб</label><input id="f_br" placeholder="мисол: Фурӯши хуб дар моҳи октябр"><label>Маблағ (сомонӣ)</label><input type="number" id="f_ba">${acts('btn-success','Премия + WhatsApp',`confirmBonus('${w.id}')`)}`);
+  if(m.type==='addFineType')return wrap('Намуди чаримаи нав',`<label>Номи чарима</label><input id="f_fn" placeholder="мисол: Либоси нодуруст"><label>Маблағ (сомонӣ)</label><input type="number" id="f_fa">${acts('btn-primary','Илова кардан','confirmAddFineType()')}`);
+  if(m.type==='paySalary'){
+    const b=workerBalance(w);
+    return wrap('Додани маош — '+esc(w.name),`<div class="pay-line"><span>Маоши асосӣ</span><span>${fmtMoney(b.base)}</span></div>
+    <div class="pay-line"><span>Премия (+)</span><span class="amt-pos">+${fmtMoney(b.bonuses)}</span></div>
+    <div class="pay-line"><span>Чарима (−)</span><span class="amt-neg">−${fmtMoney(b.fines)}</span></div>
+    <div class="pay-line"><span>Дер омадан (−)</span><span class="amt-neg">−${fmtMoney(b.late)}</span></div>
+    <div class="pay-line total"><span>Ҳамагӣ</span><span>${fmtMoney(b.total)}</span></div>${acts('btn-accent','Дода шуд + WhatsApp',`confirmPay('${w.id}')`)}`);
+  }
+  return'';
+}
+function saveWorker(mode,id){
+  const w=mode==='editWorker'?state.workers.find(x=>x.id===id):{id:uid(),lastPaidDate:null};
+  const g=i=>document.getElementById(i).value.trim();
+  w.name=g('f_name');w.position=g('f_position');w.phone=g('f_phone');w.address=g('f_address');
+  w.shiftStart=g('f_s');w.shiftEnd=g('f_e');w.salary=parseFloat(g('f_salary'))||0;w.hireDate=g('f_hire')||todayISO();
+  if(!w.name){alert('Ному насаби коргарро нависед');return;}
+  if(mode==='addWorker')state.workers.push(w);
+  saveData();modalState=null;
+  if(mode==='addWorker')view={tab:'workers',workerId:null};
+  render();
+  if(mode==='addWorker')enrollFinger(w.id);
+}
+function sendGroup(w,r){
+  const d=new Date(),f=r.type==='fine',k=f?'Чарима':'Премия';
+  const t=`${f?'⚠️':'🏆'} ${k.toUpperCase()}\n👤 Коргар: ${w.name}\n📅 Рӯз: ${WD[d.getDay()]}, ${fmtDate(r.date)}\n🕐 Вақт: ${r.time}\n📝 ${k}: ${r.name}\n💰 Маблағ: ${f?'−':'+'}${fmtMoney(r.amount)}\n\nМаркази савдои Ҳоким`;
+  window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank');
+}
+function addRecord(w,type,name,amount){
+  const r={id:uid(),workerId:w.id,type,name,amount,date:todayISO(),time:new Date().toTimeString().slice(0,5),paid:false};
+  state.records.push(r);saveData();modalState=null;render();sendGroup(w,r);
+}
+function confirmFine(id){
+  const ft=state.fineTypes.find(f=>f.id===document.getElementById('f_ft').value);if(!ft)return;
+  addRecord(state.workers.find(x=>x.id===id),'fine',ft.name,ft.amount);
+}
+function confirmBonus(id){
+  const name=document.getElementById('f_br').value.trim()||'Премия',amount=parseFloat(document.getElementById('f_ba').value)||0;
+  if(amount<=0){alert('Маблағро нависед');return;}
+  addRecord(state.workers.find(x=>x.id===id),'bonus',name,amount);
+}
+function confirmAddFineType(){
+  const name=document.getElementById('f_fn').value.trim(),amount=parseFloat(document.getElementById('f_fa').value)||0;
+  if(!name||amount<=0){alert('Ном ва маблағро нависед');return;}
+  state.fineTypes.push({id:uid(),name,amount});saveData();modalState=null;render();
+}
+function confirmPay(id){
+  const w=state.workers.find(x=>x.id===id),b=workerBalance(w);
+  workerRecords(id).forEach(r=>r.paid=true);w.lastPaidDate=todayISO();saveData();
+  const msg=`Ассалому алайкум, ${w.name}!\n\nМаоши шумо барои ин давра:\nАсосӣ: ${fmtMoney(b.base)}\nПремия: +${fmtMoney(b.bonuses)}\nЧарима: −${fmtMoney(b.fines)}\nДер омадан: −${fmtMoney(b.late)}\n\nҲамагӣ: ${fmtMoney(b.total)}\n\nТашаккур барои кор!\nМаркази савдои Ҳоким`;
+  const p=(w.phone||'').replace(/\D/g,'');
+  if(p)window.open(`https://wa.me/${p}?text=${encodeURIComponent(msg)}`,'_blank');else alert('Рақами телефон нест, WhatsApp кушода нашуд.');
+  modalState=null;view={tab:'workers',workerId:null};render();
+}
+loadData();
+</script>
+</body>
+</html>
